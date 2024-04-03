@@ -12,8 +12,8 @@
         "host": "smtp.ethereal.email",
         "port": 587,
         "auth": {
-            "user": "",
-            "pass": ""
+            "user": "princewilfieverame@email.com",
+            "pass": "gwapoko123"
         }
     }
 } 
