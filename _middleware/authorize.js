@@ -17,14 +17,14 @@ function authorize(roles = []) {
                     return res.status(401).json({ message: 'Unauthorized' });
                 }
                 
-                const account = await db.account.findByPk(req.user.id);
+                const account = await db.account.findByPk(req.auth.id);
                 if (!account || (roles.length && !roles.includes(account.role))) {
                     return res.status(401).json({ message: 'Unauthorized' });
                 }
                 
-                req.user.role = account.role;
+                req.auth.role = account.role;
                 const refreshTokens = await account.getRefreshTokens();
-                req.user.ownsToken = token => !!refreshTokens.find(x => x.token === token);
+                req.auth.ownsToken = token => !!refreshTokens.find(x => x.token === token);
                 next();
             });
         } catch (error) {
