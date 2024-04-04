@@ -36,7 +36,7 @@ async function authenticate({ email, password, ipAddress}){
     }
 
     const jwtToken = generateJwtToken(account);
-    const refreshToken = generatefreshToken(account, ipAddress);
+    const refreshToken = generateRefreshToken(account, ipAddress);
 
     await refreshToken.save();
 
