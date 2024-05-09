@@ -17,6 +17,10 @@ async function initialize() {
 
     db.Account = require('../accounts/account.model')(sequelize);
     db.RefreshToken = require('../accounts/refresh-token.model')(sequelize);
+    db.Event = require('../accounts/events.model')(sequelize); 
+    db.Registration = require('../accounts/Registrations.model')(sequelize); // Add this line for Registration model
+
+
 
 
     db.Account.hasMany(db.RefreshToken, { onDelete: 'CASCADE'});
