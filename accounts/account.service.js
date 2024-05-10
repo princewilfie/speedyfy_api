@@ -7,6 +7,8 @@ const sendEmail = require('_helpers/send-email');
 const db = require('_helpers/db');
 const Role = require('_helpers/role');
 
+const path = require('path');
+
 module.exports = {
     authenticate,
     refreshToken,
@@ -258,11 +260,20 @@ async function sendVerificationEmail(account, origin) {
     }
 
     await sendEmail({
+        from: {
+            name: 'Speedyfy',
+            address: 'speedyfyteam.info@gmail.com'
+        },
         to: account.email,
-        subject: 'Sign-up Verification API - Verify Email',
+        subject: 'Sign-up Verification - Verify Email',
         html: `<h4>Verify Email</h4>
                <p>Thanks for registering!</p>
-               ${message}`
+               ${message}`, 
+        attachment:{
+            filename: 'logo.png',
+            path: path.join(__dirname, 'speedy.png'),
+            contentType: 'image/png'
+        }
     });
 }
 
@@ -275,11 +286,15 @@ async function sendAlreadyRegisteredEmail(email, origin) {
     }
 
     await sendEmail({
+        from: {
+            name: 'Speedyfy',
+            address: 'speedyfyteam.info@gmail.com'
+        },
         to: email,
         subject: 'Sign-up Verification API - Email Already Registered',
         html: `<h4>Email Already Registered</h4>
                <p>Your email <strong>${email}</strong> is already registered.</p>
-               ${message}`
+               ${message}`,
     });
 }
 
@@ -295,6 +310,10 @@ async function sendPasswordResetEmail(account, origin) {
     }
 
     await sendEmail({
+        from: {
+            name: 'Speedyfy',
+            address: 'speedyfyteam.info@gmail.com'
+        },
         to: account.email,
         subject: 'Sign-up Verification API - Reset Password',
         html: `<h4>Reset Password Email</h4>

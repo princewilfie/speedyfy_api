@@ -7,13 +7,14 @@
         "database" : "node-mysql-signup-verification-api"
     },
     "secret": "6c32701b-3329-431e-b95f-5604da73e4fc",
-    "emailFrom": "info@node-mysql-signup-verification-api.com",
+    "emailFrom": "info@node-speedyfyteam.info@gmail.com",
     "smtpOptions" : {
-        "host": "smtp.ethereal.email",
+        "service": "Gmail",
+        "host": "smtp.gmail.com", 
         "port": 587,
         "auth": {
-            "user": "tyree.predovic16@ethereal.email",
-            "pass": "SbZ7xKfA2BdPfgEcYr"
+            "user": "speedyfyteam.info@gmail.com",
+            "pass": "dthtsjmtagolzrkp"
         }
     }
 } 
