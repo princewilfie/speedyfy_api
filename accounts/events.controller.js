@@ -23,7 +23,7 @@ function createSchema(req, res, next) {
         description: Joi.string().required(),
         category: Joi.string().required(),
         price: Joi.number().required(),
-        image: Joi.any().required() // Validate as a file upload
+        image: Joi.any().optional() // Optional for create, as multer handles it
     });
     validateRequest(req, next, schema);
 }
@@ -56,7 +56,8 @@ function updateSchema(req, res, next) {
         location: Joi.string().empty(''),
         description: Joi.string().empty(''),
         category: Joi.string().empty(''),
-        price: Joi.number().empty('')
+        price: Joi.number().empty(''),
+        image: Joi.any().optional() // Optional for update, as multer handles it
     });
     validateRequest(req, next, schema); 
 }
