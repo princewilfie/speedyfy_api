@@ -30,7 +30,10 @@ function createSchema(req, res, next) {
 
 function create(req, res, next) {
     // Extract image file path from req.file
-    const image = req.file ? req.file.path : null;
+    const image = req.file ? req.file : null;
+
+    // Log the file details for debugging
+    console.log('Uploaded file:', req.file);
 
     eventService.create({ ...req.body, image }) // Pass image path to service
         .then(event => res.status(201).json(event))
@@ -64,7 +67,10 @@ function updateSchema(req, res, next) {
 
 function update(req, res, next) {
     // Extract image file path from req.file
-    const image = req.file ? req.file.path : null;
+    const image = req.file ? req.file : null;
+
+    // Log the file details for debugging
+    console.log('Uploaded file:', req.file);
 
     eventService.update(req.params.id, { ...req.body, image }) // Pass image path to service
         .then(() => res.json({ message: 'Event updated successfully' }))
