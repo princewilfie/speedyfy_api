@@ -24,6 +24,8 @@ async function create(eventData) {
 
         if (image) {
             const imagePath = await saveImage(event.id, image);
+            console.log('Saved image path:', imagePath); // Add this line
+
             await event.update({ image: imagePath });
         }
 
