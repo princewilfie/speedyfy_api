@@ -22,7 +22,10 @@ module.exports = {
     getById,
     create,
     update,
-    delete: _delete
+    delete: _delete,
+    notifyUsers,
+    notifyAllUsersForUpcomingEvents // Add this line to export the function
+
 };
 
 async function authenticate({ email, password, ipAddress }) {
@@ -319,4 +322,75 @@ async function sendPasswordResetEmail(account, origin) {
         html: `<h4>Reset Password Email</h4>
                ${message}`
     });
+}
+
+
+
+// Add this new function for notifying users
+async function notifyUsers(event) {
+    try {
+        // Fetch all user emails from the database
+        const users = await db.Account.findAll({ attributes: ['email'] });
+        const emailPromises = users.map(user => {
+            const emailOptions = {
+                to: user.email,
+                subject: `New Event Created: ${event.name}`,
+                html: `<p>A new event has been created:</p>
+                       <p><strong>Name:</strong> ${event.name}</p>
+                       <p><strong>Date:</strong> ${event.date}</p>
+                       <p><strong>Location:</strong> ${event.location}</p>
+                       <p><strong>Description:</strong> ${event.description}</p>
+                       <p><strong>Category:</strong> ${event.category}</p>
+                       <p><strong>Price:</strong> ${event.price}</p>
+                       ${event.image ? `<p><img src="${event.image}" alt="${event.name} Image" style="max-width: 600px; height: auto;"></p>` : ''}
+                       <p>We hope to see you there!</p>`
+            };
+            return sendEmail(emailOptions);
+        });
+        await Promise.all(emailPromises);
+    } catch (error) {
+        console.error('Error notifying users:', error);
+        throw error;
+    }
+}
+
+
+
+
+async function notifyAllUsersForUpcomingEvents() {
+    try {
+        // Get all upcoming events
+        const currentDate = new Date();
+        const upcomingEvents = await db.Event.findAll({
+            where: {
+                date: { [Op.gt]: currentDate } // Fetch events with dates greater than the current date
+            }
+        });
+
+        // Fetch all user emails from the database
+        const users = await db.Account.findAll({ attributes: ['email'] });
+
+        // Iterate through each user and send notification email for upcoming events
+        const emailPromises = users.map(async user => {
+            const emailOptions = {
+                to: user.email,
+                subject: 'Upcoming Events Notification',
+                html: `<p>Dear User,</p>
+                       <p>Here are some upcoming events:</p>
+                       <ul>
+                           ${upcomingEvents.map(event => `<li>${event.name} - ${event.date}</li>`).join('')}
+                       </ul>
+                       <p>Stay tuned for these exciting events!</p>`
+            };
+            return sendEmail(emailOptions);
+        });
+
+        // Wait for all email promises to resolve
+        await Promise.all(emailPromises);
+
+        console.log('All users notified for upcoming events');
+    } catch (error) {
+        console.error('Error notifying users for upcoming events:', error);
+        throw error;
+    }
 }

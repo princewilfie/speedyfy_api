@@ -36,7 +36,6 @@ function create(req, res, next) {
     // Log the file details for debugging
     console.log('Uploaded file:', req.file);
 
-    notifyUsersForNewEvent(req.body);
     
     eventService.create({ ...req.body, image }) // Pass image path to service
         .then(event => res.status(201).json(event))
@@ -87,45 +86,3 @@ function _delete(req, res, next) {
 }
 
 
-
-async function sendRegistrationConfirmation(req, res, next) {
-    try {
-        // Assuming you pass user email and origin in the request body
-        const { userEmail, origin } = req.body;
-
-        // Fetch user details based on the email from eventService
-        const user = await eventService.getUserByEmail(userEmail);
-
-        if (!user) {
-            return res.status(404).json({ message: 'User not found.' });
-        }
-
-        // Send event registration confirmation email
-        await sendEventRegistrationConfirmation(user, origin);
-
-        return res.status(200).json({ message: 'Event registration confirmation email sent successfully.' });
-    } catch (error) {
-        console.error('Error sending event registration confirmation email:', error);
-        return res.status(500).json({ message: 'Internal server error.' });
-    }
-}
-
-
-async function notifyUsersForNewEvent(event) {
-    try {
-        // Fetch all registered users from the database
-        const users = await eventService.getAllUsers();
-
-        // Filter users who are registered with Gmail accounts
-        const gmailUsers = users.filter(user => user.email.endsWith('@gmail.com'));
-
-        // Send notification email to Gmail users
-        for (const user of gmailUsers) {
-            await sendEventNotificationEmail(user.email, event);
-        }
-
-        console.log('Notification emails sent to Gmail users for the new event.');
-    } catch (error) {
-        console.error('Error sending notification emails for new event:', error);
-    }
-}

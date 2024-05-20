@@ -13,15 +13,13 @@ async function initialize() {
     const connection = await mysql.createConnection({host, port, user, password});
     await connection.query(`CREATE DATABASE IF NOT EXISTS \`${database}\`;`);
 
-    const sequelize = new Sequelize(database, user, password, { dialect: 'mysql'});
+    const sequelize = new Sequelize(database, user, password, { 
+        host, port, dialect: 'mysql'});
 
     db.Account = require('../accounts/account.model')(sequelize);
     db.RefreshToken = require('../accounts/refresh-token.model')(sequelize);
     db.Event = require('../accounts/events.model')(sequelize); 
     db.Registration = require('../accounts/Registrations.model')(sequelize); // Add this line for Registration model
-
-
-
 
     db.Account.hasMany(db.RefreshToken, { onDelete: 'CASCADE'});
     db.RefreshToken.belongsTo(db.Account);
