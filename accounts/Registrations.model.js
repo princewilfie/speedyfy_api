@@ -4,16 +4,16 @@ module.exports = model;
 
 function model(sequelize) {
     const attributes = {
-        reg_id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-        event_id: { type: DataTypes.INTEGER, allowNull: false },
+        registration_id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+        event_id: { type: DataTypes.INTEGER, allowNull: false},
         acc_id: { type: DataTypes.INTEGER, allowNull: false },
-        acc_name: { type: DataTypes.STRING, allowNull: false },
         date_registered: { type: DataTypes.DATE, allowNull: false },
-        payment_status: { type: DataTypes.STRING, allowNull: false }
+        payment_status: { type: DataTypes.STRING, allowNull: false },
+        ticket_number: { type: DataTypes.STRING, allowNull: true }
     };
 
     const options = {
-        timestamps: false // Optionally, you can define timestamps behavior here
+        timestamps: false 
     };
 
     return sequelize.define('Registration', attributes, options);

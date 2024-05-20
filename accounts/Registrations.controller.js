@@ -8,19 +8,20 @@ const registrationService = require('./Registrations.service');
 // routes
 router.get('/', getAll);
 router.get('/:id', getById);
-router.post('/', createSchema, create);
+router.post('/registerEvent', createSchema, create);
 router.put('/:id', updateSchema, update);
 router.delete('/:id', _delete);
 
 module.exports = router;
 
+
 function createSchema(req, res, next) {
     const schema = Joi.object({
         event_id: Joi.number().required(),
         acc_id: Joi.number().required(),
-        acc_name: Joi.string().required(),
         date_registered: Joi.date().required(),
-        payment_status: Joi.string().required()
+        payment_status: Joi.string().required(),
+        ticket_number: Joi.string().required()
     });
     validateRequest(req, next, schema);
 }

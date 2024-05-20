@@ -8,6 +8,7 @@ module.exports = {
     delete: _delete
 };
 
+
 async function create(registrationData) {
     try {
         const registration = await db.Registration.create(registrationData);
