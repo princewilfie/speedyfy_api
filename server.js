@@ -19,6 +19,8 @@ app.use(cors({ origin: (origin, callback) => callback(null, true), credentials: 
 // api routes
 app.use('/accounts', require('./accounts/accounts.controller'));
 app.use('/events', require('./accounts/events.controller')); // Mount the events controller router
+app.use('/registrations', require('./accounts/Registrations.controller')); // Mount the registrations controller router
+
 
 
 // swagger docs route
